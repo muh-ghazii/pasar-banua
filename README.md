@@ -99,6 +99,23 @@ Semua kata sandi: `password`
 - Notifikasi hanya di dalam aplikasi (tanpa email/WhatsApp).
 - Foto demo dari Wikimedia Commons (lihat `/tentang#kredit-foto`); produk tanpa foto memakai ilustrasi cadangan.
 
+## Deploy gratis (Render + TiDB Cloud)
+
+Repo sudah berisi `Dockerfile`, `docker/entrypoint.sh`, dan `render.yaml`. Saat container menyala, entrypoint menjalankan `migrate --force` lalu `db:seed --force` (seeder hanya mengisi data bila masih kosong, jadi aman dijalankan ulang).
+
+1. **Database (TiDB Cloud Serverless, gratis, kompatibel MySQL):** daftar di tidbcloud.com → buat cluster *Serverless* (region Singapore) → buat database `pasar_banua` → klik *Connect* dan catat host, port (4000), user, dan password.
+2. **Kode:** push repo ini ke GitHub.
+3. **Render:** daftar di render.com dengan akun GitHub → *New → Blueprint* → pilih repo ini. Render membaca `render.yaml` dan meminta nilai berikut:
+   - `APP_KEY`: hasil `php artisan key:generate --show` di laptop.
+   - `APP_URL`: URL layanan, mis. `https://pasar-banua.onrender.com`.
+   - `DB_HOST`, `DB_PORT`, `DB_DATABASE`, `DB_USERNAME`, `DB_PASSWORD`: dari TiDB.
+4. Tunggu build selesai (±5–10 menit), lalu buka URL-nya.
+
+Batasan paket gratis:
+- Layanan tidur setelah 15 menit tanpa pengunjung; akses pertama butuh ±30–60 detik.
+- Filesystem Render bersifat sementara: foto yang **diunggah** seller/admin hilang saat layanan restart atau deploy ulang. Foto data demo aman karena disajikan dari `public/images/demo`. Untuk foto unggahan permanen, arahkan `PASARBANUA_UPLOAD_DISK` ke object storage (mis. S3/R2).
+- Memakai Aiven MySQL sebagai ganti TiDB? Hapus `MYSQL_ATTR_SSL_CA` dan isi `DB_SSL_CA_PEM` dengan isi file `ca.pem` dari Aiven.
+
 ## Pengujian
 
 ```bash
