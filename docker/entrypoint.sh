@@ -20,6 +20,15 @@ case "$APP_KEY" in
     *) APP_KEY="base64:$(php -r 'echo base64_encode(hash("sha256", getenv("APP_KEY"), true));')"; export APP_KEY ;;
 esac
 
+# Mode tanpa server database: SQLite di dalam container (data kembali ke demo
+# setiap container dibuat ulang). Untuk data permanen pakai DB_CONNECTION=mysql.
+if [ "$DB_CONNECTION" = "sqlite" ]; then
+    DB_DATABASE="${DB_DATABASE:-/var/www/html/database/database.sqlite}"
+    export DB_DATABASE
+    touch "$DB_DATABASE"
+    chown www-data:www-data "$DB_DATABASE" "$(dirname "$DB_DATABASE")"
+fi
+
 php artisan storage:link --force >/dev/null 2>&1 || true
 php artisan config:cache
 php artisan route:cache
