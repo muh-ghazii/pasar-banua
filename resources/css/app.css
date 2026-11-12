@@ -1,0 +1,225 @@
+@import 'tailwindcss';
+
+@import 'tw-animate-css';
+
+@source '../views';
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+
+/*
+ * Pasar Banua — design tokens
+ * Palet mengikuti dokumen presentasi: Deep Navy, Warm Cream, Banua Teal,
+ * Heritage Gold, Brick Red, dan Soft Ivory.
+ */
+@theme {
+    --font-sans:
+        'DM Sans', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+    --font-heading:
+        'Manrope', 'DM Sans', ui-sans-serif, system-ui, -apple-system, 'Segoe UI',
+        sans-serif;
+
+    /* Brand */
+    --color-navy: #14263e;
+    --color-navy-800: #1c3350;
+    --color-navy-700: #2a4466;
+    --color-cream: #f2e9de;
+    --color-cream-200: #eadfd0;
+    --color-cream-300: #dfd2bf;
+    --color-ivory: #f5efe7;
+    --color-teal: #076468;
+    --color-teal-700: #054f52;
+    --color-teal-100: #d6e8e6;
+    --color-teal-50: #e8f2f0;
+    --color-gold: #c5872a;
+    --color-gold-700: #9d6a1c;
+    --color-gold-100: #f3e3c6;
+    --color-brick: #952831;
+    --color-brick-100: #f1d9d9;
+    --color-ink-muted: #56627a;
+
+    --radius-lg: var(--radius);
+    --radius-md: calc(var(--radius) - 2px);
+    --radius-sm: calc(var(--radius) - 4px);
+    --radius-xl: calc(var(--radius) + 4px);
+    --radius-2xl: calc(var(--radius) + 8px);
+
+    /* shadcn semantic tokens → brand */
+    --color-background: var(--background);
+    --color-foreground: var(--foreground);
+
+    --color-card: var(--card);
+    --color-card-foreground: var(--card-foreground);
+
+    --color-popover: var(--popover);
+    --color-popover-foreground: var(--popover-foreground);
+
+    --color-primary: var(--primary);
+    --color-primary-foreground: var(--primary-foreground);
+
+    --color-secondary: var(--secondary);
+    --color-secondary-foreground: var(--secondary-foreground);
+
+    --color-muted: var(--muted);
+    --color-muted-foreground: var(--muted-foreground);
+
+    --color-accent: var(--accent);
+    --color-accent-foreground: var(--accent-foreground);
+
+    --color-destructive: var(--destructive);
+    --color-destructive-foreground: var(--destructive-foreground);
+
+    --color-border: var(--border);
+    --color-input: var(--input);
+    --color-ring: var(--ring);
+
+    --color-chart-1: var(--chart-1);
+    --color-chart-2: var(--chart-2);
+    --color-chart-3: var(--chart-3);
+    --color-chart-4: var(--chart-4);
+    --color-chart-5: var(--chart-5);
+
+    --color-sidebar: var(--sidebar);
+    --color-sidebar-foreground: var(--sidebar-foreground);
+    --color-sidebar-primary: var(--sidebar-primary);
+    --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+    --color-sidebar-accent: var(--sidebar-accent);
+    --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+    --color-sidebar-border: var(--sidebar-border);
+    --color-sidebar-ring: var(--sidebar-ring);
+
+    --shadow-soft: 0 1px 2px rgb(20 38 62 / 0.05), 0 4px 14px rgb(20 38 62 / 0.05);
+    --shadow-lift: 0 2px 4px rgb(20 38 62 / 0.05), 0 12px 28px rgb(20 38 62 / 0.1);
+}
+
+:root {
+    --background: #f2e9de;
+    --foreground: #14263e;
+    --card: #f5efe7;
+    --card-foreground: #14263e;
+    --popover: #f9f5ef;
+    --popover-foreground: #14263e;
+    --primary: #076468;
+    --primary-foreground: #f9f5ef;
+    --secondary: #eadfd0;
+    --secondary-foreground: #14263e;
+    --muted: #eadfd0;
+    --muted-foreground: #56627a;
+    --accent: #e6dac8;
+    --accent-foreground: #14263e;
+    --destructive: #952831;
+    --destructive-foreground: #f9f5ef;
+    --border: #dccfbb;
+    --input: #cfc0a8;
+    --ring: #076468;
+    --chart-1: #076468;
+    --chart-2: #c5872a;
+    --chart-3: #14263e;
+    --chart-4: #952831;
+    --chart-5: #7aa5a3;
+    --radius: 0.75rem;
+    --sidebar: #14263e;
+    --sidebar-foreground: #e9e0d3;
+    --sidebar-primary: #c5872a;
+    --sidebar-primary-foreground: #14263e;
+    --sidebar-accent: #1f3652;
+    --sidebar-accent-foreground: #f5efe7;
+    --sidebar-border: #243d5c;
+    --sidebar-ring: #c5872a;
+}
+
+@layer base {
+    * {
+        @apply border-border;
+    }
+
+    html {
+        scroll-behavior: smooth;
+        -webkit-text-size-adjust: 100%;
+        background-color: #f2e9de;
+    }
+
+    body {
+        @apply bg-background font-sans text-foreground antialiased;
+        font-feature-settings:
+            'ss01' on,
+            'cv11' on;
+        overflow-x: clip;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4 {
+        font-family: var(--font-heading);
+        letter-spacing: -0.02em;
+    }
+
+    ::selection {
+        background: #c5872a;
+        color: #14263e;
+    }
+
+    :focus-visible {
+        outline: 2px solid var(--color-teal);
+        outline-offset: 2px;
+    }
+
+    button,
+    [role='button'],
+    a {
+        -webkit-tap-highlight-color: transparent;
+    }
+}
+
+@layer utilities {
+    .font-heading {
+        font-family: var(--font-heading);
+    }
+
+    .text-balance {
+        text-wrap: balance;
+    }
+
+    .text-pretty {
+        text-wrap: pretty;
+    }
+
+    /* Kontainer konten yang tidak terlalu melebar */
+    .container-page {
+        @apply mx-auto w-full max-w-[1280px] px-4 sm:px-6 lg:px-8;
+    }
+
+    .eyebrow {
+        @apply font-heading text-[0.72rem] font-bold tracking-[0.14em] uppercase;
+    }
+
+    /* Sembunyikan scrollbar untuk strip horizontal yang disengaja */
+    .no-scrollbar {
+        scrollbar-width: none;
+    }
+    .no-scrollbar::-webkit-scrollbar {
+        display: none;
+    }
+
+    .pb-safe {
+        padding-bottom: max(0.5rem, env(safe-area-inset-bottom));
+    }
+}
+
+/* Aksen motif garis bergelombang (terinspirasi kain bermotif garis) */
+.motif-wave {
+    --motif-color: currentColor;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='16' viewBox='0 0 48 16'%3E%3Cpath d='M0 8 Q 6 0 12 8 T 24 8 T 36 8 T 48 8' fill='none' stroke='%23C5872A' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");
+    background-repeat: repeat-x;
+    background-size: 48px 16px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+}
