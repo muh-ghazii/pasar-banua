@@ -51,6 +51,13 @@ RUN rm -rf .tools public/hot public/storage tests node_modules \
     && chown -R www-data:www-data storage bootstrap/cache \
     && chmod +x docker/entrypoint.sh
 
+# Izinkan berjalan sebagai user non-root (mis. Hugging Face Spaces, UID 1000).
+RUN chmod -R a+rwX storage bootstrap/cache database public \
+    && chmod a+rw /etc/apache2/ports.conf /etc/apache2/sites-available/000-default.conf \
+    && chmod a+rwx /etc/apache2 /etc/apache2/sites-available \
+    && mkdir -p /var/run/apache2 /var/lock/apache2 \
+    && chmod -R a+rwX /var/run/apache2 /var/lock/apache2 /var/log/apache2
+
 EXPOSE 8080
 ENTRYPOINT ["docker/entrypoint.sh"]
 CMD ["apache2-foreground"]
