@@ -12,7 +12,8 @@ sed -ri "s/<VirtualHost \*:[0-9]+>/<VirtualHost *:${PORT}>/" /etc/apache2/sites-
 # diturunkan menjadi kunci 32 byte format Laravel.
 case "$APP_KEY" in
     base64:*) ;;
-    "") echo "APP_KEY belum diisi" >&2; exit 1 ;;
+    "") echo "APP_KEY kosong; membuat kunci acak sementara (sesi login akan reset saat restart)." >&2
+        APP_KEY="base64:$(php -r 'echo base64_encode(random_bytes(32));')"; export APP_KEY ;;
     *) APP_KEY="base64:$(php -r 'echo base64_encode(hash("sha256", getenv("APP_KEY"), true));')"; export APP_KEY ;;
 esac
 
